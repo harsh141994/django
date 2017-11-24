@@ -18,8 +18,10 @@ def home(request):
 		num = random.randint(0, 100000)
 	context = {"html":"context_variable",
 			 "num":num,
-	 		 "some_list":some_list}
-	return render(request, "home.html",context )
+	 		 "some_list":some_list} #{{var}} is the context variable in the html to render
+	 		 #can use this dictionary to replace that variable
+	return render(request, "home.html",context ) #takes three arguments, requests, 
+	#template to render and context which is a dictionary that help in the template
 
 def about(request):
 	
@@ -33,10 +35,10 @@ def contact(request):
 
 
 
-# class ContactView(View):
+# class ContactView(View): #inherits from the View class
 # 	"""docstring for ContactView"""
 
-# 	def get(self, request, *args, **kwargs):
+# 	def get(self, request, *args, **kwargs): #kwargs holds the passed arguments from the url
 # 		context = {}
 # 		return render(request, "contact.html",context )
 
@@ -44,9 +46,12 @@ def contact(request):
 #class HomeView(TemplateView):
 	
 
-# class AboutView(TemplateView):
+# class AboutView(TemplateView): #inheriting from the template view, and here we just need the template name
 # 	template_name = 'about.html'
-
+	# def get_context_data(self, *args, **kwargs): #overriding the context method in the TemplateView class
+	# 	context = super(HomeView, self).get_context_data(*args, **kwargs);#getting the context from the super class
+	# 	print context
+	# 	return context
 
 # class ContactView(TemplateView):
 # 	template_name = 'contact.html'		
@@ -74,16 +79,17 @@ def restaurant_createview(request):
 
 def restaurant_listview(request):
 	template_name='restaurants/restaurants_list.html'
-	queryset = RestaurantLocation.objects.all()
+	queryset = RestaurantLocation.objects.all()#getting all the items in the restaurantlocation database
 	context={
 		"object_list":queryset
 	}
 	return render(request, template_name, context)
 
 class RestaurantListView(ListView):
-	#template_name='restaurants/restaurants_list.html'
-	def get_queryset(self):
-		slug = self.kwargs.get("slug")
+	#template_name='restaurants/restaurants_list.html' #this template name we were overriding
+
+	def get_queryset(self): #getting the queryset(overriding the method from the superclass)
+		slug = self.kwargs.get("slug") #slug is the dictionary object in the self.kwargs
 		if slug:	
 			queryset = RestaurantLocation.objects.filter(
 				Q(category__iexact = slug)|
@@ -91,13 +97,13 @@ class RestaurantListView(ListView):
 			)
 		else:
 			queryset = RestaurantLocation.objects.all()
-		return queryset
+		return queryset #collection of RestaurantLocation database objects
 
 
 class RestaurantDetailView(DetailView):
 	queryset = RestaurantLocation.objects.all()
 
-	# def get_context_data(self, *args, **kwargs):
+	# def get_context_data(self, *args, **kwargs): #getting the context 
 	# 	print self.kwargs
 	# 	context = super(RestaurantDetailView, self).get_context_data(*args, **kwargs)
 	# 	print context

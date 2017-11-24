@@ -6,16 +6,16 @@ from django.db import models
 
 # Create your models here.
 
-class RestaurantLocation(models.Model):
+class RestaurantLocation(models.Model):#Model is the class it is inheriting from
 	name 			= models.CharField(max_length=150)
 	location 		= models.CharField(max_length=150, null = True, blank = True)
-	category 		= models.CharField(max_length=150, null = True, blank = True)
-	timestamp		= models.DateTimeField( auto_now_add = True)
+	category 		= models.CharField(max_length=150, null = True, blank = True)#since null=true so when we add a new field with this, we dont need to provide a value to the existing objects
+	timestamp		= models.DateTimeField( auto_now_add = True) #automatically saved for us
 	updated 		= models.DateTimeField(auto_now = True)
-	#my_date_field 	= models.DateTimeField(auto_now = False, auto_now_add = False)
+	#my_date_field 	= models.DateTimeField(auto_now = False, auto_now_add = False)#we have to add it everytime
 	slug			= models.SlugField(null = True, blank = True)
 
-	def __str__(self):
+	def __str__(self): #if we want to print the restaurantlocation object
 		return self.name
 
 	@property

@@ -17,6 +17,7 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.views.generic import TemplateView
 
+#need to import the views so as to connect to the url
 from restaurants.views import  (restaurant_listview,
     RestaurantListView,
     #MexicanRestaurantListView,
@@ -29,10 +30,11 @@ from restaurants.views import  (restaurant_listview,
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    #url(r'^$', home),
+    #url(r'^$', home), #$ means the url has ended
    # url(r'^about/', about),
     url(r'^contact/$', TemplateView.as_view(template_name = 'contact.html')),
-    url(r'^$', TemplateView.as_view(template_name = 'home.html')),
+    url(r'^$', TemplateView.as_view(template_name = 'home.html')), #import the TemplateView and 
+    #add the template name as the argument (this works if we dont need to manipulate the view in the views)
     
     url(r'^about/$', TemplateView.as_view(template_name = 'about.html')),
 
