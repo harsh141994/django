@@ -9,54 +9,6 @@ from django.views.generic import TemplateView, ListView, DetailView, CreateView
 from .models import RestaurantLocation
 from .forms import RestaurantCreateForm, RestaurantLocationCreateForm
 
-def home(request):
-	num = None
-	some_list = [ random.randint(0, 100000), random.randint(0, 100000),random.randint(0, 100000)]
-	condition_bool_item = False
-
-	if condition_bool_item:
-		num = random.randint(0, 100000)
-	context = {"html":"context_variable",
-			 "num":num,
-	 		 "some_list":some_list} #{{var}} is the context variable in the html to render
-	 		 #can use this dictionary to replace that variable
-	return render(request, "home.html",context ) #takes three arguments, requests, 
-	#template to render and context which is a dictionary that help in the template
-
-def about(request):
-	
-	context = {}
-	return render(request, "about.html",context )
-
-def contact(request):
-	
-	context = {}
-	return render(request, "contact.html",context )
-
-
-
-# class ContactView(View): #inherits from the View class
-# 	"""docstring for ContactView"""
-
-# 	def get(self, request, *args, **kwargs): #kwargs holds the passed arguments from the url
-# 		context = {}
-# 		return render(request, "contact.html",context )
-
-
-#class HomeView(TemplateView):
-	
-
-# class AboutView(TemplateView): #inheriting from the template view, and here we just need the template name
-# 	template_name = 'about.html'
-	# def get_context_data(self, *args, **kwargs): #overriding the context method in the TemplateView class
-	# 	context = super(HomeView, self).get_context_data(*args, **kwargs);#getting the context from the super class
-	# 	print context
-	# 	return context
-
-# class ContactView(TemplateView):
-# 	template_name = 'contact.html'		
-
-
 
 
 def restaurant_createview(request):
@@ -81,12 +33,15 @@ def restaurant_listview(request):
 	template_name='restaurants/restaurants_list.html'
 	queryset = RestaurantLocation.objects.all()#getting all the items in the restaurantlocation database
 	context={
-		"object_list":queryset
+		"object_list":queryset #context is mostly like this
 	}
 	return render(request, template_name, context)
 
 class RestaurantListView(ListView):
 	#template_name='restaurants/restaurants_list.html' #this template name we were overriding
+	#currently no slug is being passed
+	#therefore the call is just
+	#queryset = RestaurantLocation.objects.all()
 
 	def get_queryset(self): #getting the queryset(overriding the method from the superclass)
 		slug = self.kwargs.get("slug") #slug is the dictionary object in the self.kwargs
@@ -103,16 +58,7 @@ class RestaurantListView(ListView):
 class RestaurantDetailView(DetailView):
 	queryset = RestaurantLocation.objects.all()
 
-	# def get_context_data(self, *args, **kwargs): #getting the context 
-	# 	print self.kwargs
-	# 	context = super(RestaurantDetailView, self).get_context_data(*args, **kwargs)
-	# 	print context
-	# 	return context
-
-	# def get_object(self, *args, **kwargs):
-	# 	rest_id = self.kwargs.get('rest_id')
-	# 	obj = get_object_or_404(RestaurantLocation, id = rest_id)
-	# 	return obj
+	
 		
 
 class RestaurantCreateView(CreateView):

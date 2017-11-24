@@ -1,6 +1,7 @@
 from django import forms
 #this class is to perform the post request
 from .models import RestaurantLocation
+from .validators import validate_category, validate_email
 
 class RestaurantCreateForm(forms.Form):
 	name 			= forms.CharField()
@@ -14,7 +15,8 @@ class RestaurantCreateForm(forms.Form):
 		return name	
 
 class RestaurantLocationCreateForm(forms.ModelForm):
-	email = forms.EmailField()
+	#email = forms.EmailField(required= False, validators=[validate_email])
+	category = forms.CharField(required = False, validators=[validate_category])
 	class Meta:
 		model = RestaurantLocation
 		fields = [
@@ -29,8 +31,8 @@ class RestaurantLocationCreateForm(forms.ModelForm):
 			raise forms.ValidationError("not a vaid name")
 		return name	
 
-	def clean_email(self):
-		email = self.cleaned_data.get("email")
-		if "edu" in email:
-			raise forms.ValidationError("we do not accepts edu emails")
-		return email	
+	# def clean_email(self):
+	# 	email = self.cleaned_data.get("email")
+	# 	if "edu" in email:
+	# 		raise forms.ValidationError("we do not accepts edu emails")
+	# 	return email	
