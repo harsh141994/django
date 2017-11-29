@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin #mixins are for class based views
 from django.http import HttpResponse, HttpResponseRedirect
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
@@ -10,19 +13,25 @@ from .models import RestaurantLocation
 from .forms import RestaurantCreateForm, RestaurantLocationCreateForm
 
 
-
+@login_required() #decorator to make sure that user is logged in to see this view
 def restaurant_createview(request):
 	
 	form = RestaurantLocationCreateForm(request.POST or None)
 	errors=None
 	
 	if form.is_valid():
-		form.save()
-		return HttpResponseRedirect("/restaurants")
+		if request.user.is_authenticated():
+			instance = form.save(commit=False)
+			instance.owner = request.user
+			instance.save()
+			return HttpResponseRedirect("/restaurants/")
+		else:
+			return HttpResponseRedirect("/login/")
+	
 
 	if form.errors:
-		print form.errors	
 		errors = form.errors
+
 	template_name='restaurants/form.html'
 	context={"form":form, "errors":errors} #can pass in the form itself so that we dont have to write the fields again in the html
 	return render(request, template_name, context)
@@ -61,8 +70,9 @@ class RestaurantDetailView(DetailView):
 	
 		
 
-class RestaurantCreateView(CreateView):
+class RestaurantCreateView(LoginRequiredMixin, CreateView):
 	form_class = RestaurantLocationCreateForm
+	login_url = '/login/'
 	template_name = 'restaurants/form.html'
 	success_url = "/restaurants/"
 
