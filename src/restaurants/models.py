@@ -6,6 +6,7 @@ from django.db.models.signals import pre_save, post_save
 from .utils import unique_slug_generator
 from django.db import models
 from .validators import validate_category
+from django.core.urlresolvers import reverse
 
 User = settings.AUTH_USER_MODEL#to get the user model 
 # Create your models here.
@@ -21,6 +22,9 @@ class RestaurantLocation(models.Model):#Model is the class it is inheriting from
 
 	def __str__(self): #if we want to print the restaurantlocation object
 		return self.name
+
+	def get_absolute_url(self):
+		return reverse('restaurants:detail', kwargs={'slug': self.slug}) #restaurants:detail, here restaurants is the namespace
 
 	@property
 	def title (self):
