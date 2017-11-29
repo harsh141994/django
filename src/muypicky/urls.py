@@ -16,13 +16,12 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.views.generic import TemplateView
+from django.contrib.auth.views import LoginView
+
 
 #need to import the views so as to connect to the url
 from restaurants.views import  (restaurant_listview,
     RestaurantListView,
-    #MexicanRestaurantListView,
-   # AsianFusionRestaurantListView,
-    #SearchRestaurantListView,
     RestaurantDetailView,
     restaurant_createview,
     RestaurantCreateView
@@ -30,18 +29,12 @@ from restaurants.views import  (restaurant_listview,
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    #url(r'^$', home), #$ means the url has ended
-   # url(r'^about/', about),
+    url(r'^login/$', LoginView.as_view(), name='login'),
     url(r'^contact/$', TemplateView.as_view(template_name = 'contact.html')),
     url(r'^$', TemplateView.as_view(template_name = 'home.html')), #import the TemplateView and 
     #add the template name as the argument (this works if we dont need to manipulate the view in the views)
-    
     url(r'^about/$', TemplateView.as_view(template_name = 'about.html')),
-
     url(r'^restaurants/$', RestaurantListView.as_view()),
     url(r'^restaurants/create/$', RestaurantCreateView.as_view()),
-   #url(r'^restaurants/(?P<slug>\w+)/$', RestaurantListView.as_view()),
     url(r'^restaurants/(?P<slug>[\w-]+)/$', RestaurantDetailView.as_view()),
-
-   # url(r'^restaurants/asian/$', AsianFusionRestaurantListView.as_view()),
 ]
