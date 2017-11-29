@@ -35,4 +35,6 @@ urlpatterns = [
     #add the template name as the argument (this works if we dont need to manipulate the view in the views)
     url(r'^about/$', TemplateView.as_view(template_name = 'about.html'), name = 'about'),
     url(r'^restaurants/', include('restaurants.urls', namespace = 'restaurants')),
+    url(r'^items/', include('menus.urls', namespace = 'menus')),
+
  ]   

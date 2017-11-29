@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 from django.conf import settings
 from django.db import models
+from django.core.urlresolvers import reverse
 
 from restaurants.models import RestaurantLocation
 
@@ -17,6 +18,10 @@ class Item(models.Model):
     timestamp       = models.DateTimeField(auto_now_add=True)
     updated         = models.DateTimeField(auto_now=True)
 
+
+    def get_absolute_url(self):
+		return reverse('menus:detail', kwargs={'pk': self.pk}) #restaurants:detail, here restaurants is the namespace
+    
     class Meta:
         ordering = ['-updated', '-timestamp']
 
