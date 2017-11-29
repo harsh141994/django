@@ -1,13 +1,17 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+from django.conf import settings
+
 from django.db.models.signals import pre_save, post_save
 from .utils import unique_slug_generator
 from django.db import models
 from .validators import validate_category
 
+User = settings.AUTH_USER_MODEL#to get the user model 
 # Create your models here.
 
 class RestaurantLocation(models.Model):#Model is the class it is inheriting from
+	owner 			= models.ForeignKey(User) #one user has a lot of different locations
 	name 			= models.CharField(max_length=150)
 	location 		= models.CharField(max_length=150, null = True, blank = True)
 	category 		= models.CharField(max_length=150, null = True, blank = True, validators=[validate_category])#since null=true so when we add a new field with this, we dont need to provide a value to the existing objects
