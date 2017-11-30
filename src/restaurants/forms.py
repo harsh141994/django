@@ -23,6 +23,7 @@ class RestaurantLocationCreateForm(forms.ModelForm):
 			'name',
 			'location',
 			'category',
+			'slug'
 		]
 		
 	def clean_name(self): #called when we do forms.is_valid in the restaurant_createview method

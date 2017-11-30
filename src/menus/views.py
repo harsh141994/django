@@ -45,7 +45,7 @@ class ItemCreateView(LoginRequiredMixin, CreateView): #adding mixin as the argum
 
 
 class ItemUpdateView(LoginRequiredMixin, UpdateView):
-    template_name = 'form.html' #using from the outside form in templates
+    template_name = 'menus/detail-update.html' #using from the outside form in templates
     form_class = ItemForm
 
     def get_queryset(self):
