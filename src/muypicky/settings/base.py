@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'restaurants', #created a new app and added models so need to add in here
     'menus',
+    'profiles',#needed to add here for the templates
 ]
 
 MIDDLEWARE = [
